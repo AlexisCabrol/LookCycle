@@ -3,11 +3,13 @@ package fr.cabrolalexis.velo.view.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import fr.cabrolalexis.velo.R
 import fr.cabrolalexis.velo.model.City
 import fr.cabrolalexis.velo.utils.RxLifecycleDelegate
 import fr.cabrolalexis.velo.view.adapter.CityListAdapter
+import fr.cabrolalexis.velo.view.adapter.ItemDecoration
 import fr.cabrolalexis.velo.view.base.BaseActivity
 import fr.cabrolalexis.velo.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_home.*
@@ -31,6 +33,7 @@ class HomeActivity: BaseActivity() {
 
         rvStationList.adapter = adapter
         rvStationList.layoutManager = LinearLayoutManager(this)
+        rvStationList.addItemDecoration(ItemDecoration(ContextCompat.getDrawable(applicationContext, R.drawable.item_decoration)!!))
 
 
         viewModel.city
