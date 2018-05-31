@@ -15,14 +15,16 @@ class CityRepository(private val service: VLService) {
     private val apiKey: String = BuildConfig.API_KEY
     val listCity: BehaviorSubject<List<City>> = BehaviorSubject.create()
 
-    fun fetchCity(): Flowable<List<City>> {
+    fun fetchCity(): Flowable<NetworkEvent> {
         val obs = service.getContracts(apiKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
                     listCity.onNext(it)
                 }
-
+                .map<NetworkEvent> { NetworkEvent.Success }
+                .onErrorReturn{ NetworkEvent.Error(it) }
+                .startWith(NetworkEvent.InProgress)
                 .share()
         return obs
     }

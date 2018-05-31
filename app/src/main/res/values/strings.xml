@@ -6,6 +6,7 @@
     <!-- City details activity -->
     <string name="titleMap">Carte</string>
     <string name="titleStationList">Liste des stations</string>
+    <string name="errorLoadCityList">Une erreur est survenue lors du chargement.</string>
 
     <!-- Station List -->
     <string name="bikeAvailable">Vélo disponibles : %1$s</string>

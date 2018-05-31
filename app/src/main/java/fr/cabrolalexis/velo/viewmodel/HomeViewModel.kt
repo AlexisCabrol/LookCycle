@@ -2,23 +2,24 @@ package fr.cabrolalexis.velo.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import fr.cabrolalexis.velo.data.NetworkEvent
 import fr.cabrolalexis.velo.model.City
 import fr.cabrolalexis.velo.repository.CityRepository
-import fr.cabrolalexis.velo.utils.disposedBy
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 
 
 class HomeViewModel(private val cityRepository: CityRepository) : BaseViewModel() {
 
-    val city: BehaviorSubject<List<City>> = BehaviorSubject.create()
+    val loadCityState: BehaviorSubject<NetworkEvent> = BehaviorSubject.createDefault(NetworkEvent.None)
+    val city: BehaviorSubject<List<City>>
+        get() {
+            return cityRepository.listCity
+        }
 
-    init {
+    fun fetchCity() {
         cityRepository.fetchCity()
-                .subscribe { }
-                .disposedBy(disposeBag)
-        cityRepository.listCity
-                .subscribe { city.onNext(it) }
-                .disposedBy(disposeBag)
+                .subscribe({ loadCityState.onNext(it) }, { Timber.e(it) })
     }
 
     class Factory(private val cityRepository: CityRepository) : ViewModelProvider.Factory {
