@@ -18,8 +18,8 @@ interface VLService {
 
     //region station
 
-    @GET("stations?contract={contract_name}")
-    fun getStationListOfCity(@Path("contract_name") cityName: String, @Query("apiKey") key: String): Flowable<List<Station>>
+    @GET("stations")
+    fun getStationListOfCity(@Query("contract") contract: String, @Query("apiKey") key: String): Flowable<List<Station>>
 
     //endregion
 }

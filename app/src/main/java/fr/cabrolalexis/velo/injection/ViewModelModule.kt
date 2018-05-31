@@ -1,6 +1,7 @@
 package fr.cabrolalexis.velo.injection
 
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v4.app.FragmentActivity
 import fr.cabrolalexis.velo.repository.CityRepository
 import fr.cabrolalexis.velo.repository.StationRepository
 import fr.cabrolalexis.velo.view.activity.CityDetailsActivity
@@ -25,7 +26,7 @@ val viewModelModule = Kodein.Module {
     }
 
     bind<CityDetailsViewModel.Factory>() with provider { CityDetailsViewModel.Factory(instance<StationRepository>()) }
-    bind<CityDetailsViewModel>() with factory { activity: CityDetailsActivity ->
+    bind<CityDetailsViewModel>() with factory { activity: FragmentActivity ->
         ViewModelProviders.of(activity, instance<CityDetailsViewModel.Factory>())
                 .get(CityDetailsViewModel::class.java)
     }

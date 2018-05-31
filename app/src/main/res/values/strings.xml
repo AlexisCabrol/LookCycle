@@ -6,4 +6,8 @@
     <!-- City details activity -->
     <string name="titleMap">Carte</string>
     <string name="titleStationList">Liste des stations</string>
+
+    <!-- Station List -->
+    <string name="bikeAvailable">Vélo disponibles : %1$s</string>
+    <string name="standsAvailable">Place disponibles : %1$s</string>
 </resources>
