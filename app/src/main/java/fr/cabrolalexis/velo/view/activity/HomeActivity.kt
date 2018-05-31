@@ -55,7 +55,7 @@ class HomeActivity: BaseActivity(), CityListAdapter.CityListAdapterCallback {
     //region Callback
 
     override fun onItemClick(city: City) {
-        startActivity(CityDetailsActivity.createIntent(this))
+        startActivity(CityDetailsActivity.createIntent(this, city.name))
     }
 
     //endregion
