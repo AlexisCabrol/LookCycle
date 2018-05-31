@@ -3,7 +3,9 @@ package fr.cabrolalexis.velo.view.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.jakewharton.rxbinding2.view.clicks
 import fr.cabrolalexis.velo.R
+import fr.cabrolalexis.velo.utils.RxLifecycleDelegate
 import fr.cabrolalexis.velo.view.adapter.CityDetailsViewPagerAdapter
 import fr.cabrolalexis.velo.view.base.BaseActivity
 import fr.cabrolalexis.velo.view.fragment.MapFragment
@@ -32,8 +34,14 @@ class CityDetailsActivity : BaseActivity() {
         setupViewPager()
 
         val name = intent.getStringExtra(EXTRA_NAME_CITY)
+        titleCity.text = name
         viewModel.fetchStation(name)
+
+        back.clicks()
+                .takeUntil(lifecycle(RxLifecycleDelegate.ActivityEvent.DESTROY))
+                .subscribe({ onBackPressed()})
     }
+
 
     private fun setupViewPager() {
         val adapter = CityDetailsViewPagerAdapter(supportFragmentManager)
