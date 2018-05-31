@@ -52,12 +52,12 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         googleMap = p0
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-        if(stationList != null && !stationList.isEmpty()) {
+        if(!stationList.isEmpty()) {
             for(station in stationList) {
                 googleMap.addMarker(MarkerOptions().position(LatLng(station.position.lat, station.position.lng)).title(station.name))
             }
             val cameraPosition = CameraPosition.builder().target(LatLng(stationList.get(0).position.lat,
-                    stationList.get(0).position.lng)).zoom(15f).build()
+                    stationList.get(0).position.lng)).zoom(12f).build()
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
 

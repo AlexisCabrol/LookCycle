@@ -12,19 +12,18 @@ import timber.log.Timber
 class CityDetailsViewModel(private val stationRepository: StationRepository) : BaseViewModel() {
 
     private val currentNameCity: BehaviorSubject<String> = BehaviorSubject.create()
-    val station: BehaviorSubject<List<Station>> = BehaviorSubject.create()
-    val refreshState: BehaviorSubject<NetworkEvent> = BehaviorSubject.createDefault(NetworkEvent.None)
+    val station: BehaviorSubject<List<Station>>
+        get() {
+            return stationRepository.listStation
+        }
 
-    init {
-        stationRepository.listStation
-                .subscribe { station.onNext(it) }
-                .disposedBy(disposeBag)
-    }
+    val refreshState: BehaviorSubject<NetworkEvent> = BehaviorSubject.createDefault(NetworkEvent.None)
+    val loadStationState: BehaviorSubject<NetworkEvent> = BehaviorSubject.createDefault(NetworkEvent.None)
 
     fun fetchStation(name: String) {
         currentNameCity.onNext(name)
-        stationRepository.fetchStation(currentNameCity.value)
-                .subscribe({ }, { Timber.e(it) })
+        stationRepository.getStation(currentNameCity.value)
+                .subscribe({ loadStationState.onNext(it) }, { Timber.e(it) })
     }
 
     fun refresh() {

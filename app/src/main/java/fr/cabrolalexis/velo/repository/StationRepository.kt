@@ -15,13 +15,16 @@ class StationRepository(private val service: VLService) {
     private val apiKey: String = BuildConfig.API_KEY
     val listStation: BehaviorSubject<List<Station>> = BehaviorSubject.create()
 
-    fun fetchStation(name: String): Flowable<List<Station>> {
+    fun getStation(name: String): Flowable<NetworkEvent> {
         val obs = service.getStationListOfCity(name, apiKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
                     listStation.onNext(it)
                 }
+                .map<NetworkEvent> { NetworkEvent.Success }
+                .onErrorReturn{ NetworkEvent.Error(it) }
+                .startWith(NetworkEvent.InProgress)
                 .share()
         return obs
     }
