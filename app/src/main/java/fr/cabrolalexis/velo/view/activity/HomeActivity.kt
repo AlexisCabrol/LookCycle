@@ -15,10 +15,10 @@ import fr.cabrolalexis.velo.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_home.*
 import org.kodein.di.generic.instance
 
-class HomeActivity: BaseActivity() {
+class HomeActivity: BaseActivity(), CityListAdapter.CityListAdapterCallback {
 
     private val viewModel: HomeViewModel by instance(arg = this)
-    private val adapter = CityListAdapter()
+    private val adapter = CityListAdapter(this)
 
     companion object {
         fun createIntent(context: Context): Intent {
@@ -51,4 +51,12 @@ class HomeActivity: BaseActivity() {
         }
 
     }
+
+    //region Callback
+
+    override fun onItemClick(city: City) {
+        startActivity(CityDetailsActivity.createIntent(this))
+    }
+
+    //endregion
 }

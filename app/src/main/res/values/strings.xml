@@ -3,4 +3,7 @@
 
     <string name="titleHome">Liste des villes</string>
 
+    <!-- City details activity -->
+    <string name="titleMap">Carte</string>
+    <string name="titleStationList">Liste des stations</string>
 </resources>

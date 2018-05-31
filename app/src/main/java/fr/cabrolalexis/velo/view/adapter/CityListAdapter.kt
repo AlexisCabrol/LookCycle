@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.view.clicks
 import fr.cabrolalexis.velo.R
 import fr.cabrolalexis.velo.model.City
 import kotlinx.android.synthetic.main.item_city.view.*
 
-class CityListAdapter : ListAdapter<City, CityListAdapter.CityViewHolder>(DiffCityCallback()) {
+class CityListAdapter(val cityListAdapterCallback: CityListAdapterCallback) : ListAdapter<City, CityListAdapter.CityViewHolder>(DiffCityCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false)
@@ -26,15 +28,32 @@ class CityListAdapter : ListAdapter<City, CityListAdapter.CityViewHolder>(DiffCi
     fun getItemAtPosition(position: Int): City = getItem(position)
 
     inner class CityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private lateinit var item: City
 
         fun bind(item: City) {
+            this.item = item
             loadTexts(item)
+            loadActions()
+        }
+
+        fun onItemClick() {
+            cityListAdapterCallback.onItemClick(item)
+        }
+
+        private fun loadActions() {
+            itemView.clicks()
+                    .takeUntil(RxView.detaches(itemView))
+                    .subscribe({ onItemClick() })
         }
 
         private fun loadTexts(item: City) {
             itemView.nameCity.text = item.name
             itemView.nameCommercial.text = item.commercial_name
         }
+    }
+
+    interface CityListAdapterCallback {
+        fun onItemClick(city: City)
     }
 }
 

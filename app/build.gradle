@@ -18,7 +18,6 @@ android {
         debug {
             buildConfigField "String", "API_URL", "\"https://api.jcdecaux.com/vls/v1/\""
             buildConfigField "String", "API_KEY", "\"a5634163c26e0267c532d80e607c8fe97cc040a6\""
-
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
             debuggable true
