@@ -1,12 +1,15 @@
 package fr.cabrolalexis.velo.view.fragment
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jakewharton.rxbinding2.view.clicks
 import fr.cabrolalexis.velo.R
+import fr.cabrolalexis.velo.data.NetworkEvent
 import fr.cabrolalexis.velo.model.Station
 import fr.cabrolalexis.velo.utils.RxLifecycleDelegate
 import fr.cabrolalexis.velo.view.adapter.ItemDecoration
@@ -40,14 +43,60 @@ class StationListFragment : BaseFragment(), StationListAdapter.StationListAdapte
         rvDetailsList.addItemDecoration(ItemDecoration(ContextCompat.getDrawable(context!!, R.drawable.item_decoration)!!))
         viewModel.station
                 .takeUntil(lifecycle(RxLifecycleDelegate.FragmentEvent.DESTROY_VIEW))
-                .subscribe({ setupListStation(it)}, { Timber.e(it) })
+                .subscribe({ setupListStation(it) }, { Timber.e(it) })
+
+        viewModel.refreshState
+                .takeUntil(lifecycle(RxLifecycleDelegate.FragmentEvent.DESTROY_VIEW))
+                .subscribe({ onRefreshStateChange(it) }, { Timber.e(it) })
+
+        swipeRefresh.setOnRefreshListener { viewModel.refresh() }
+
     }
 
     private fun setupListStation(listStation: List<Station>) {
-        if(!listStation.isEmpty()) {
+        if (!listStation.isEmpty()) {
             adapter.submitList(listStation)
         }
     }
+
+    //region network refresh list
+
+    private fun onRefreshStateChange(netStatus: NetworkEvent) {
+        when(netStatus) {
+            NetworkEvent.None -> {
+               onRefreshStateNone()
+            }
+            NetworkEvent.InProgress -> {
+               onRefreshStateProgress()
+            }
+            is NetworkEvent.Error -> {
+                onRefreshStateError()
+            }
+            NetworkEvent.Success -> {
+                onRefreshStateSuccess()
+            }
+        }
+    }
+
+    private fun onRefreshStateNone() {
+        swipeRefresh.isRefreshing = false
+    }
+
+    private fun onRefreshStateProgress() {
+        swipeRefresh.isRefreshing = true
+    }
+
+    private fun onRefreshStateError() {
+        swipeRefresh.isRefreshing = false
+        Snackbar.make(clStationList, R.string.refreshfailed , Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun onRefreshStateSuccess() {
+        swipeRefresh.isRefreshing = false
+        Snackbar.make(clStationList, R.string.refreshsuccess , Snackbar.LENGTH_SHORT).show()
+    }
+
+    //endregion
 
     //region callback list
 

@@ -10,4 +10,6 @@
     <!-- Station List -->
     <string name="bikeAvailable">Vélo disponibles : %1$s</string>
     <string name="standsAvailable">Place disponibles : %1$s</string>
+    <string name="refreshsuccess">Vous avez bien mis à jour votre liste de station.</string>
+    <string name="refreshfailed">Une erreur est survenue, veuillez réessayer.</string>
 </resources>
