@@ -7,6 +7,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fr.cabrolalexis.velo.BuildConfig
 import fr.cabrolalexis.velo.data.VLService
+import fr.cabrolalexis.velo.model.Station
+import fr.cabrolalexis.velo.model.typeadapter.StationTypeAdapter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -47,7 +49,7 @@ val networkModule = Kodein.Module(allowSilentOverride = true) {
 
     bind<Gson>() with singleton {
         GsonBuilder()
-
+                .registerTypeAdapter(StationTypeAdapter::class.java, StationTypeAdapter())
                 .create()
     }
 

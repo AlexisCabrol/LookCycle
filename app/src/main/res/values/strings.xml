@@ -12,4 +12,5 @@
     <string name="standsAvailable">Place disponibles : %1$s</string>
     <string name="refreshsuccess">Vous avez bien mis à jour votre liste de station.</string>
     <string name="refreshfailed">Une erreur est survenue, veuillez réessayer.</string>
+    <string name="title_activity_maps_fragment">Map</string>
 </resources>
