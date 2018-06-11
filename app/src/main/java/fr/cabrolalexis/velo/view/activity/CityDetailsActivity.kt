@@ -45,11 +45,15 @@ class CityDetailsActivity : BaseActivity() {
 
         viewModel.loadStationState
                 .takeUntil(lifecycle(RxLifecycleDelegate.ActivityEvent.DESTROY))
-                .subscribe({ onLoadStationStationChange(it)},{ Timber.e(it)})
+                .subscribe({ onLoadStationStationChange(it) }, { Timber.e(it) })
 
         back.clicks()
                 .takeUntil(lifecycle(RxLifecycleDelegate.ActivityEvent.DESTROY))
-                .subscribe({ onBackPressed()})
+                .subscribe({ onBackPressed() })
+
+        btsearch.clicks()
+                .takeUntil(lifecycle(RxLifecycleDelegate.ActivityEvent.DESTROY))
+                .subscribe({ startActivity(SearchActivity.createIntent(this)) }, { Timber.e(it) })
 
 
     }
@@ -57,7 +61,7 @@ class CityDetailsActivity : BaseActivity() {
     //region network status
 
     private fun onLoadStationStationChange(netStatus: NetworkEvent) {
-        when(netStatus) {
+        when (netStatus) {
             NetworkEvent.None -> {
                 onLoadStationStateNone()
             }

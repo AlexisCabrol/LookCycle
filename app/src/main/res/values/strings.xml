@@ -15,4 +15,6 @@
     <string name="refreshfailed">Une erreur est survenue, veuillez réessayer.</string>
     <string name="title_activity_maps_fragment">Map</string>
     <string name="errorLoadStationList">Une erreur est survenue lors du chargement.</string>
+    <string name="noStation">Aucunes stations trouvées.</string>
+
 </resources>

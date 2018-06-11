@@ -12,13 +12,34 @@ import timber.log.Timber
 class CityDetailsViewModel(private val stationRepository: StationRepository) : BaseViewModel() {
 
     private val currentNameCity: BehaviorSubject<String> = BehaviorSubject.create()
-    val station: BehaviorSubject<List<Station>>
-        get() {
-            return stationRepository.listStation
-        }
+    val searchText: BehaviorSubject<String> = BehaviorSubject.createDefault("")
+    val stationSearch: BehaviorSubject<List<Station>> = BehaviorSubject.create()
+    val station: BehaviorSubject<List<Station>> = BehaviorSubject.create()
+
+    init {
+        stationRepository.listStation.subscribe(
+                {
+                    stationSearch.onNext(it)
+                    station.onNext(it)
+                },
+                { Timber.e(it) }
+        )
+                .disposedBy(disposeBag)
+
+        searchText.subscribe({
+            val list = mutableListOf<Station>()
+            for (s in station.value) {
+                if (s.address.toLowerCase().contains(it) || s.name.toLowerCase().contains(it))
+                    list.add(s)
+            }
+            stationSearch.onNext(list)
+        }, { Timber.e(it) })
+                .disposedBy(disposeBag)
+    }
 
     val refreshState: BehaviorSubject<NetworkEvent> = BehaviorSubject.createDefault(NetworkEvent.None)
     val loadStationState: BehaviorSubject<NetworkEvent> = BehaviorSubject.createDefault(NetworkEvent.None)
+
 
     fun fetchStation(name: String) {
         currentNameCity.onNext(name)
@@ -28,7 +49,7 @@ class CityDetailsViewModel(private val stationRepository: StationRepository) : B
 
     fun refresh() {
         stationRepository.refreshStation(currentNameCity.value)
-                .subscribe({ refreshState.onNext(it)}, { Timber.e(it) })
+                .subscribe({ refreshState.onNext(it) }, { Timber.e(it) })
     }
 
 

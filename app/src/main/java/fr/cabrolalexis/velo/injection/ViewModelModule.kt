@@ -4,9 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.support.v4.app.FragmentActivity
 import fr.cabrolalexis.velo.repository.CityRepository
 import fr.cabrolalexis.velo.repository.StationRepository
-import fr.cabrolalexis.velo.view.activity.CityDetailsActivity
 import fr.cabrolalexis.velo.view.activity.HomeActivity
-import fr.cabrolalexis.velo.view.fragment.StationListFragment
 import fr.cabrolalexis.velo.viewmodel.HomeViewModel
 import fr.cabrolalexis.velo.viewmodel.CityDetailsViewModel
 import org.kodein.di.Kodein
