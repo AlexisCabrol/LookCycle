@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
 import com.google.maps.android.clustering.ClusterItem
 
+
 class Station(
         @SerializedName("number") var number: Int,
         @SerializedName("contract_name") var contractName: String,
@@ -18,18 +19,17 @@ class Station(
         @SerializedName("available_bikes") var veloAvailable: Int,
         @SerializedName("last_update") var timestamp: Long) : ClusterItem {
 
+    var info: String? = null
+
     override fun getSnippet(): String {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        return address
+        return info!!
     }
 
     override fun getTitle(): String {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         return name
     }
 
     override fun getPosition(): LatLng {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         return LatLng(position.lat, position.lng)
     }
 }

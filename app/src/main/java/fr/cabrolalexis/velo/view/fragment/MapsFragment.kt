@@ -61,6 +61,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
         if(!stationList.isEmpty()) {
             for(station in stationList) {
+                station.info = getString(R.string.info, station.veloAvailable, station.emptyStands)
                 clusterManager.addItem(station)
             }
             val cameraPosition = CameraPosition.builder().target(LatLng(stationList.get(0).position.lat,

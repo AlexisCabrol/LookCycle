@@ -16,6 +16,7 @@ class StationTypeAdapter: JsonDeserializer<Station> {
             Position(0.toDouble(),0.toDouble())
         }
 
+
         return Station(
                 json.asJsonObject.get("number").asInt,
                 json.asJsonObject.get("contract_name").asString,
