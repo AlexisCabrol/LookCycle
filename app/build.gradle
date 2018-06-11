@@ -49,6 +49,8 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
 
     // RX
     implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.1'

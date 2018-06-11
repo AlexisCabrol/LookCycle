@@ -8,7 +8,9 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 import fr.cabrolalexis.velo.R
+import fr.cabrolalexis.velo.model.Station
 import fr.cabrolalexis.velo.view.base.BaseFragment
 import fr.cabrolalexis.velo.viewmodel.CityDetailsViewModel
 import kotlinx.android.synthetic.main.fragment_maps.view.*
@@ -22,6 +24,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private lateinit var mapView: MapView
     private lateinit var mView : View
+    private lateinit var clusterManager: ClusterManager<Station>
 
     companion object {
         fun newInstance(): MapsFragment = MapsFragment()
@@ -48,13 +51,17 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         val stationList = viewModel.station.value
         MapsInitializer.initialize(context)
-
         googleMap = p0
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        clusterManager = ClusterManager(activity, googleMap)
+
+        googleMap.setOnCameraIdleListener(clusterManager)
+        googleMap.setOnMarkerClickListener(clusterManager)
+
 
         if(!stationList.isEmpty()) {
             for(station in stationList) {
-                googleMap.addMarker(MarkerOptions().position(LatLng(station.position.lat, station.position.lng)).title(station.name))
+                clusterManager.addItem(station)
             }
             val cameraPosition = CameraPosition.builder().target(LatLng(stationList.get(0).position.lat,
                     stationList.get(0).position.lng)).zoom(12f).build()
