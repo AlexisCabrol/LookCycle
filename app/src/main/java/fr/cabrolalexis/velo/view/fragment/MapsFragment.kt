@@ -1,13 +1,17 @@
 package fr.cabrolalexis.velo.view.fragment
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.ClusterManager
 import fr.cabrolalexis.velo.R
 import fr.cabrolalexis.velo.model.Station
@@ -23,10 +27,11 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var viewModel: CityDetailsViewModel
     private lateinit var googleMap: GoogleMap
     private lateinit var mapView: MapView
-    private lateinit var mView : View
+    private lateinit var mView: View
     private lateinit var clusterManager: ClusterManager<Station>
 
     companion object {
+        const val REQUEST_PERMISSION_LOCATION = 1001
         fun newInstance(): MapsFragment = MapsFragment()
     }
 
@@ -41,7 +46,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         viewModel = kodein.direct.instance(arg = activity)
 
         mapView = mView.map
-        if(mapView != null) {
+        if (mapView != null) {
             mapView.onCreate(null)
             mapView.onResume()
             mapView.getMapAsync(this)
@@ -55,12 +60,22 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         clusterManager = ClusterManager(activity, googleMap)
 
+        if (ContextCompat.checkSelfPermission(context!!, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            googleMap.isMyLocationEnabled = true
+        } else {
+            ActivityCompat.requestPermissions(activity as Activity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_PERMISSION_LOCATION)
+
+
+        }
+
         googleMap.setOnCameraIdleListener(clusterManager)
         googleMap.setOnMarkerClickListener(clusterManager)
 
 
-        if(!stationList.isEmpty()) {
-            for(station in stationList) {
+        if (!stationList.isEmpty()) {
+            for (station in stationList) {
                 station.info = getString(R.string.info, station.veloAvailable, station.emptyStands)
                 clusterManager.addItem(station)
             }
@@ -72,7 +87,21 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         }
 
 
+    }
 
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_PERMISSION_LOCATION -> {
+                //
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    googleMap.clear()
+                } else {
+
+                }
+                return
+            }
+        }
     }
 
 }
