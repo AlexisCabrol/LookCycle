@@ -13,6 +13,11 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="TextBoldWhite" parent="Base.TextAppearance.AppCompat.Small">
+        <item name="android:fontFamily">@font/gotham_bold</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 
     <style name="TextBar" parent="TextBold">
         <item name="android:textSize">18sp</item>

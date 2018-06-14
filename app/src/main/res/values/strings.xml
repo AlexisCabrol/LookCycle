@@ -3,6 +3,14 @@
 
     <string name="titleHome">Liste des villes</string>
 
+    <!-- About dev -->
+    <string name="about">A propos</string>
+    <string name="name">Alexis Cabrol</string>
+    <string name="source">Data provided by JCDecaux.</string>
+    <string name="mail">alexiscabrololivaux@gmail.com</string>
+    <string name="github">https://github.com/AlexisCabrol</string>
+    <string name="linkedin">https://www.linkedin.com/in/alexiscabrol/</string>
+
     <!-- City details activity -->
     <string name="titleMap">Carte</string>
     <string name="titleStationList">Liste des stations</string>

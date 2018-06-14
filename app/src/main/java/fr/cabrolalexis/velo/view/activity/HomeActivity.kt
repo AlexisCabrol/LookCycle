@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import com.jakewharton.rxbinding2.view.clicks
 import fr.cabrolalexis.velo.R
 import fr.cabrolalexis.velo.data.NetworkEvent
 import fr.cabrolalexis.velo.model.City
@@ -40,6 +41,10 @@ class HomeActivity: BaseActivity(), CityListAdapter.CityListAdapterCallback {
         rvStationList.layoutManager = LinearLayoutManager(this)
         rvStationList.addItemDecoration(ItemDecoration(ContextCompat.getDrawable(applicationContext, R.drawable.item_decoration)!!))
         viewModel.fetchCity()
+
+        about.clicks()
+                .takeUntil(lifecycle(RxLifecycleDelegate.ActivityEvent.DESTROY))
+                .subscribe({ startActivity(AboutActivity.createIntent(this)) })
 
         viewModel.loadCityState
                 .takeUntil(lifecycle(RxLifecycleDelegate.ActivityEvent.DESTROY))
