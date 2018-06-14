@@ -28,6 +28,9 @@
         <activity
             android:name=".view.activity.CityDetailsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.AboutActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".view.activity.SearchActivity"
